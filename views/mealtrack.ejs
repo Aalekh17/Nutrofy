@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%=pageTitle%></title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+    :root {
+      --primary-color: #ff9800;
+      --primary-hover: #ff9800;
+      --background-color: #f7f9fc;
+      --sidebar-bg: #ffffff;
+      --card-bg: #ffffff;
+      --text-color: #333333;
+      --muted-text: #757575;
+      --border-color: #e0e0e0;
+      --shadow-color: rgba(0, 0, 0, 0.05);
+      --font-family: 'Poppins', sans-serif;
+    }
+    * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+    
+
+    body {
+      font-family: var(--font-family);
+      margin: 0;
+      background-color: var(--background-color);
+      color: var(--text-color);
+      display: flex;
+    }
+
+    .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .sidebar nav {
+            flex-grow: 1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: var(--muted-text-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar li a:hover,
+        .sidebar li a.active {
+            color: var(--primary-color);
+            background-color: var(--background-color);
+        }
+
+        .sidebar li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background-color: var(--primary-color);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar li a:hover::before,
+        .sidebar li a.active::before {
+            transform: scaleY(1);
+        }
+
+        .sidebar li a svg {
+            margin-right: 1rem;
+        }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 2rem;
+      width: calc(100% - 250px);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin: 0;
+    }
+    
+    .card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 25px var(--shadow-color);
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    }
+    
+    .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-description {
+        color: var(--muted-text);
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+    }
+    
+    .tabs {
+        display: flex;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 1.5rem;
+    }
+
+    .tab-button {
+        padding: 0.75rem 1.5rem;
+        cursor: pointer;
+        border: none;
+        background: none;
+        font-weight: 500;
+        color: var(--muted-text);
+        position: relative;
+        font-size: 1rem;
+        font-family: var(--font-family);
+    }
+
+    .tab-button::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--primary-color);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .tab-button.active {
+        color: var(--primary-color);
+    }
+
+    .tab-button.active::after {
+        transform: scaleX(1);
+    }
+    
+    .tab-content {
+        display: none;
+        animation: tabFadeIn 0.5s;
+    }
+    
+    .tab-content.active {
+        display: block;
+    }
+
+    @keyframes tabFadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        font-family: var(--font-family);
+        font-size: 0.95rem;
+        box-sizing: border-box;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        font-size: 1rem;
+    }
+    
+    .btn:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-2px);
+    }
+    
+    .grid-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+    }
+    
+    .calorie-summary {
+        text-align: center;
+    }
+    
+    .calorie-count {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        margin: 1rem 0;
+    }
+
+    .weekly-planner .day-row {
+      display: grid;
+      grid-template-columns: 100px 1fr 1fr 1fr;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+    
+    .weekly-planner .day-row:last-child {
+      border-bottom: none;
+    }
+    
+    .weekly-planner .day-label {
+      font-weight: 600;
+    }
+    
+    .weekly-planner .header-row {
+      color: var(--muted-text);
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @media (max-width: 1200px) {
+        .grid-container {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .sidebar {
+            width: 200px;
+        }
+        .main-content {
+            margin-left: 200px;
+            width: calc(100% - 200px);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-100%);
+            z-index: 10;
+        }
+        .main-content {
+            margin-left: 0;
+            width: 100%;
+        }
+    }
+    #food{
+        display: flex;
+    }
+
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Nutrofy</h2>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/dash">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 15h20"/><path d="M6 12v0a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v0"/></svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/tips">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                        Fitness Tips
+                    </a>
+                </li>
+                <li>
+                    <a href="/meal" class="active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2d0-1.1-.9-2-2-2h-4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2Z"/></svg>
+                        Meal Tracking
+                    </a>
+                </li>
+                <li>
+                    <a href="/workout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11.3 2.2-6.6 6.6c-.4.4-.6 1-.6 1.7V17c0 1.1.9 2 2 2h5.5c.7 0 1.3-.2 1.7-.6l6.6-6.6c.6-.6.6-1.5 0-2.1l-4.2-4.2c-.6-.6-1.5-.6-2.1 0Z"/><path d="m15.5 6-4-4"/><path d="m13 11 6 6"/><path d="M3 21h18"/></svg>
+                        Workout Log
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+  <main class="main-content">
+    <header>
+      <h1>Meal Tracking</h1>
+    </header>
+    
+    <div class="grid-container">
+    <div class="card meal-plan-card">
+        <%meals.forEach((meal)=>{%>
+        <h2 class="card-title">Meal Plan</h2>
+        <div class="meal-row">
+            <span class="meal-label">Breakfast:</span>
+            <span class="meal-food"><%=meal.breakfast_food%></span>
+            <span class="meal-calories"><%=meal.breakfast_calories%> kcal</span>
+        </div>
+        <div class="meal-row">
+            <span class="meal-label">Lunch:</span>
+            <span class="meal-food"><%=meal.lunch_food%></span>
+            <span class="meal-calories"><%=meal.lunch_calories%> kcal</span>
+        </div>
+        <div class="meal-row">
+            <span class="meal-label">Dinner:</span>
+            <span class="meal-food"><%=meal.dinner_food%></span>
+            <span class="meal-calories"><%=meal.dinner_calories%> kcal</span>
+        </div>
+        <%})%>
+        
+    </div>
+    <style>
+    .meal-plan-card {
+        margin-bottom: 1.5rem;
+    }
+    .meal-row {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .meal-row:last-child {
+        border-bottom: none;
+    }
+    .meal-label {
+        font-weight: 600;
+        color: var(--primary-color);
+        min-width: 90px;
+    }
+    .meal-food {
+        color: var(--text-color);
+        font-weight: 500;
+    }
+    .meal-calories {
+        color: var(--muted-text);
+        font-size: 1rem;
+        margin-left: auto;
+    }
+    </style>
+
+        <div class="side-column">
+            <%meals.forEach((mealo)=>{%>
+             <div class="card calorie-summary">
+                <h2 class="card-title">Today's Calorie Intake</h2>
+                <div id="calorie-total" class="calorie-count"><%=mealo.total%></div>
+                <p class="card-description">kcal</p>
+            </div>
+            <%})%>
+        </div>
+    </div>
+    
+    <div class="card" style="max-width: 500px; margin: 2rem auto;">
+        <h2 class="card-title">Enter Your Meal Planner</h2>
+        <form action="/postmeal" method="POST">
+            <div class="form-group">
+                <label for="breakfast-food">Breakfast:</label>
+                <input type="text" id="breakfast-food" name="breakfast_food" placeholder="Enter the food name">
+                <input type="number" id="breakfast-calories" name="breakfast_calories" placeholder="Enter the calories" style="margin-top:0.5rem;">
+            </div>
+            <div class="form-group">
+                <label for="lunch-food">Lunch:</label>
+                <input type="text" id="lunch-food" name="lunch_food" placeholder="Enter the food name">
+                <input type="number" id="lunch-calories" name="lunch_calories" placeholder="Enter the calories" style="margin-top:0.5rem;">
+            </div>
+            <div class="form-group">
+                <label for="dinner-food">Dinner:</label>
+                <input type="text" id="dinner-food" name="dinner_food" placeholder="Enter the food name">
+                <input type="number" id="dinner-calories" name="dinner_calories" placeholder="Enter the calories" style="margin-top:0.5rem;">
+            </div>
+            <button type="submit" class="btn" style="margin-top:1rem;">Save Meal Plan</button>
+        </form>
+    </div>
+  </main>
+  
+  
+
+</body>
+</html>

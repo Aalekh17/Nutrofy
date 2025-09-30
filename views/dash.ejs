@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrofy - Health Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #ff9800;
+            --background-color: #f4f7f9;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --muted-text-color: #777777;
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --icon-bg-color: #e9eef2;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .sidebar nav {
+            flex-grow: 1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: var(--muted-text-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar li a:hover,
+        .sidebar li a.active {
+            color: var(--primary-color);
+            background-color: var(--background-color);
+        }
+
+        .sidebar li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background-color: var(--primary-color);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar li a:hover::before,
+        .sidebar li a.active::before {
+            transform: scaleY(1);
+        }
+
+        .sidebar li a svg {
+            margin-right: 1rem;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            width: calc(100% - 250px);
+            padding: 2rem;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .page-header p {
+            color: var(--muted-text-color);
+            font-size: 1.1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px var(--shadow-color);
+            display: flex;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: card-in 0.5s forwards;
+            opacity: 0;
+        }
+
+        @keyframes card-in {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .stats-grid .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stats-grid .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stats-grid .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stats-grid .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px var(--shadow-color);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--icon-bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+
+        .stat-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-color);
+        }
+
+        .stat-info h3 {
+            font-size: 1rem;
+            color: var(--muted-text-color);
+            font-weight: 600;
+        }
+
+        .stat-info .value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px var(--shadow-color);
+        }
+
+        .card-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        
+        .card-header p {
+            color: var(--muted-text-color);
+        }
+
+        .progress-chart {
+            height: 300px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .chart-bar {
+            width: 40px;
+            background-color: var(--primary-color);
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            animation: grow-bar 1s ease-out forwards;
+            transform-origin: bottom;
+        }
+
+        .chart-bar-label {
+            position: absolute;
+            bottom: -2rem;
+            width: 100%;
+            text-align: center;
+            color: var(--muted-text-color);
+            font-weight: 600;
+        }
+        
+        .fitness-tip-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        #fitness-tip-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 1.5rem 0 0.5rem;
+            color: var(--primary-color);
+        }
+
+        #fitness-tip-text {
+            color: var(--muted-text-color);
+            flex-grow: 1;
+        }
+
+        @keyframes grow-bar {
+            from { transform: scaleY(0); }
+            to { transform: scaleY(1); }
+        }
+        
+        .chart-bar[style*="--height: 70%"] { animation-delay: 0.1s; }
+        .chart-bar[style*="--height: 85%"] { animation-delay: 0.2s; }
+        .chart-bar[style*="--height: 60%"] { animation-delay: 0.3s; }
+        .chart-bar[style*="--height: 95%"] { animation-delay: 0.4s; }
+        .chart-bar[style*="--height: 75%"] { animation-delay: 0.5s; }
+        .chart-bar[style*="--height: 100%"] { animation-delay: 0.6s; }
+        .chart-bar[style*="--height: 50%"] { animation-delay: 0.7s; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        #butt{
+          background:green;
+          border: none;
+          height:70px;
+          width:200px;
+          border-radius: 10px;
+          color:white;
+          font-weight: bold;
+          text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Nutrofy</h2>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/dash" class="active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 15h20"/><path d="M6 12v0a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v0"/></svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/tips">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                        Fitness Tips
+                    </a>
+                </li>
+                <li>
+                    <a href="/meal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2d0-1.1-.9-2-2-2h-4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2Z"/></svg>
+                        Meal Tracking
+                    </a>
+                </li>
+                <li>
+                    <a href="/workout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11.3 2.2-6.6 6.6c-.4.4-.6 1-.6 1.7V17c0 1.1.9 2 2 2h5.5c.7 0 1.3-.2 1.7-.6l6.6-6.6c.6-.6.6-1.5 0-2.1l-4.2-4.2c-.6-.6-1.5-.6-2.1 0Z"/><path d="m15.5 6-4-4"/><path d="m13 11 6 6"/><path d="M3 21h18"/></svg>
+                        Workout Log
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="page-header">
+            <h1>Welcome Back!</h1>
+            <p>Here's a look at your health data for today.</p>
+            <a id="butt" href="/reportpost">Submit Reports</a>
+      
+        </header>
+
+        <section class="stats-grid">
+            <% reports.forEach(repo=>{%>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                </div>
+                <div class="stat-info">
+                    <h3>Steps Walked</h3>
+                    <span class="value"><%=repo.steps%></span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <div class="stat-info">
+                    <h3>Heart Rate</h3>
+                    <span class="value"><%=repo.heartrate%> bpm</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.6 2.18a1 1 0 0 0-1.2 0l-6 4.3A2 2 0 0 0 4 8.24v7.52a2 2 0 0 0 1.4 1.94l6 3.3a1 1 0 0 0 1.2 0l6-3.3a2 2 0 0 0 1.4-1.94V8.24a2 2 0 0 0-1.4-1.94Z"/></svg>
+                </div>
+                <div class="stat-info">
+                    <h3>Blood Pressure</h3>
+                    <span class="value"><%=repo.bp%></span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11.3 2.2-6.6 6.6c-.4.4-.6 1-.6 1.7V17c0 1.1.9 2 2 2h5.5c.7 0 1.3-.2 1.7-.6l6.6-6.6c.6-.6.6-1.5 0-2.1l-4.2-4.2c-.6-.6-1.5-.6-2.1 0Z"/></svg>
+                </div>
+                <div class="stat-info">
+                    <h3>Sugar Level</h3>
+                    <span class="value"><%=repo.sugar%> mg/dL</span>
+                </div>
+            </div>
+            <%})%>
+        </section>
+        
+        <section class="main-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Weekly Progress</h3>
+                    <p>Your step count for the last 7 days.</p>
+                </div>
+                <div class="progress-chart">
+                    <div class="chart-bar" style="height: 70%;"><span class="chart-bar-label">Mon</span></div>
+                    <div class="chart-bar" style="height: 85%;"><span class="chart-bar-label">Tue</span></div>
+                    <div class="chart-bar" style="height: 60%;"><span class="chart-bar-label">Wed</span></div>
+                    <div class="chart-bar" style="height: 95%;"><span class="chart-bar-label">Thu</span></div>
+                    <div class="chart-bar" style="height: 75%;"><span class="chart-bar-label">Fri</span></div>
+                    <div class="chart-bar" style="height: 100%;"><span class="chart-bar-label">Sat</span></div>
+                    <div class="chart-bar" style="height: 50%;"><span class="chart-bar-label">Sun</span></div>
+                </div>
+            </div>
+            <div class="card fitness-tip-card">
+                <div class="card-header">
+                    <h3>Fitness Tip of the Day</h3>
+                </div>
+                <h4 id="fitness-tip-title"></h4>
+                <p id="fitness-tip-text"></p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tips = [
+                { title: "Stay Hydrated", text: "Drinking enough water is crucial for regulating body temperature, keeping joints lubricated, and delivering nutrients to cells." },
+                { title: "Strength Training", text: "Aim for at least two non-consecutive days per week of strength training to increase bone density and build a stronger metabolism." },
+                { title: "Prioritize Sleep", text: "Aim for 7-9 hours of quality sleep per night. It helps in muscle recovery and regulates hormones that control appetite." },
+                { title: "Mindful Eating", text: "Pay attention to your food and how it makes you feel. It can help you recognize hunger cues and prevent overeating." },
+                { title: "Active Recovery", text: "Incorporate light activities like walking, stretching, or yoga on your rest days to help your muscles recover faster." },
+                { title: "Consistent Routine", text: "Consistency is more important than intensity. Find a routine you can stick with for long-term results." },
+                { title: "Listen to Your Body", text: "Pay attention to signs of fatigue or pain. It's important to rest and not push through injuries." }
+            ];
+
+            const today = new Date().getDay(); // Sunday - 0, Monday - 1, etc.
+            const tip = tips[today];
+
+            document.getElementById('fitness-tip-title').textContent = tip.title;
+            document.getElementById('fitness-tip-text').textContent = tip.text;
+        });
+    </script>
+
+</body>
+</html>

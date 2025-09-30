@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tips - Nutrofy</title>
+    <style>
+        /* General Styles */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-color: #ff9800;
+            --background-color: #f4f7f9;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --muted-text-color: #777777;
+            --border-color: #e0e0e0;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --icon-bg-color: #e9eef2;
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 0 1rem;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .sidebar nav {
+            flex-grow: 1;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li a {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: var(--muted-text-color);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar li a:hover,
+        .sidebar li a.active {
+            color: var(--primary-color);
+            background-color: var(--background-color);
+        }
+
+        .sidebar li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background-color: var(--primary-color);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar li a:hover::before,
+        .sidebar li a.active::before {
+            transform: scaleY(1);
+        }
+
+        .sidebar li a svg {
+            margin-right: 1rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 270px; /* Sidebar width + gap */
+            padding: 40px;
+            width: calc(100% - 270px);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        header {
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        header p {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .tip-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .tip-card h3 {
+            font-size: 20px;
+            color: #e48d13;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .tip-card p {
+            font-size: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Nutrofy</h2>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a href="/dash">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v3"/><path d="M2 15h20"/><path d="M6 12v0a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v0"/></svg>
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="/tips" class="active">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                        Fitness Tips
+                    </a>
+                </li>
+                <li>
+                    <a href="/meal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2d0-1.1-.9-2-2-2h-4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2Z"/></svg>
+                        Meal Tracking
+                    </a>
+                </li>
+                <li>
+                    <a href="/workout">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m11.3 2.2-6.6 6.6c-.4.4-.6 1-.6 1.7V17c0 1.1.9 2 2 2h5.5c.7 0 1.3-.2 1.7-.6l6.6-6.6c.6-.6.6-1.5 0-2.1l-4.2-4.2c-.6-.6-1.5-.6-2.1 0Z"/><path d="m15.5 6-4-4"/><path d="m13 11 6 6"/><path d="M3 21h18"/></svg>
+                        Workout Log
+                    </a>
+                </li>
+                <li>
+                    <a href="/">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header>
+            <h1>Fitness Tips</h1>
+            <p>Expert advice to boost your wellness journey.</p>
+        </header>
+
+        <section class="tips-grid">
+            <div class="tip-card">
+                <h3>Stay Hydrated</h3>
+                <p>Drinking enough water daily is crucial for regulating body temperature, keeping joints lubricated, and improving sleep quality and mood.</p>
+            </div>
+            <div class="tip-card">
+                <h3>Incorporate Strength Training</h3>
+                <p>Aim for at least two non-consecutive days per week of strength training to increase bone density and build a stronger metabolism.</p>
+            </div>
+            <div class="tip-card">
+                <h3>Prioritize Sleep</h3>
+                <p>Aim for 7-9 hours of quality sleep per night. It helps in muscle recovery, regulates hormones, and improves cognitive function.</p>
+            </div>
+            <div class="tip-card">
+                <h3>Mindful Eating</h3>
+                <p>Pay attention to your food and how it makes you feel. Eating mindfully can help prevent overeating and improve digestion.</p>
+            </div>
+             <div class="tip-card">
+                <h3>Warm-Up and Cool-Down</h3>
+                <p>Always start your workout with a 5-10 minute warm-up and end with a cool-down to prevent injury and improve recovery.</p>
+            </div>
+            <div class="tip-card">
+                <h3>Listen to Your Body</h3>
+                <p>Rest days are as important as workout days. Pay attention to signs of fatigue or pain to avoid overtraining.</p>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>
